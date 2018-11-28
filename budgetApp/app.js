@@ -78,7 +78,7 @@ var UIController = (function() {
             return {
                 type: document.querySelector(DOMstrings.inputType).value,
                 description: document.querySelector(DOMstrings.inputDescription).value,
-                value: document.querySelector(DOMstrings.inputValue).value,
+                value: parseFloat(document.querySelector(DOMstrings.inputValue).value),
                 //  button: document.querySelector(DOMstrings.inputBtn).value
             };
         },
@@ -156,22 +156,32 @@ var controller = (function(budgetCtrl, UICtrl) {
                 ctrlAddItem();
             }
         });
-
-        document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
-
-        document.querySelector(DOM.inputType).addEventListener('change', UICtrl.changedType);
     };
 
+    var updateBudget = function() {
+        // calculate the budget
+
+
+        // return the budget
+
+
+        // display the budget on the UI
+
+    };
     var ctrlAddItem = function() {
         var input, newItem;
         // get the field input data
         var input = UIController.getinput();
-        // add the new item to the budget controller
-        newItem = budgetCtrl.addItem(input.type, input.description, input.value);
-        //Add the item to the UI
-        UICtlr.addListitem(newItem, input.type);
-        UICtlr.clearFields();
-
+        if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
+            // add the new item to the budget controller
+            newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+            //Add the item to the UI
+            UICtlr.addListitem(newItem, input.type);
+            // clear the fields
+            UICtlr.clearFields();
+            //calculate and update budget
+            updateBudget();
+        }
     };
     var ctrlDeleteItem = function(event) {
         var itemID, splitID, type, ID;

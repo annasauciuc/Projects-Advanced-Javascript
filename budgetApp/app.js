@@ -12,6 +12,13 @@ var budgetController = (function() {
         this.value = value;
 
     }
+    var calculateTotal = function(type) {
+        var sum = 0;
+        data.allItems[type].forEach(element => {
+            sum += element.value;
+        });
+        data.totals[type] = sum;
+    };
     var data = {
         allItems: {
             expenses: [],
@@ -20,7 +27,9 @@ var budgetController = (function() {
         totals: {
             expenses: 0,
             incomes: 0
-        }
+        },
+        budget: 0,
+        percetange: -1
     };
     return {
         addItem: function(type, des, val) {
@@ -51,8 +60,41 @@ var budgetController = (function() {
             return newItem;
         },
 
+        calculateBudget: function() {
+            // calculate total income and expenses
 
-    }
+            calculateTotal("exp");
+            calculateTotal("inc");
+
+            //calculate the budget: income - expenses
+
+            data.budget = data.totals.inc - data.totals.expenses;
+
+            // calculate the procentage of income that we spent
+
+
+            if (data.totals > 0) {
+                data.percetange = Math.round((data.totals.exp / data.totals.inc)) * 100
+            } else {
+                data.percetange = -1;
+            }
+
+            //Expense = 100 and income 300 ,spent 33.333%= 100/300 = 0.3333 * 100
+        },
+
+        getBudget: function() {
+            return {
+                budget: data.budget,
+                totalIncome: data.totals.inc,
+                totalExpenses: data.totals.exp,
+                percetange: data.totals.percetange
+            }
+        },
+        testing: function() {
+            console.log('data :', data);
+        }
+
+    };
 
 })();
 
@@ -161,12 +203,12 @@ var controller = (function(budgetCtrl, UICtrl) {
     var updateBudget = function() {
         // calculate the budget
 
-
+        budgetCtrl.calculateBudget();
         // return the budget
 
-
+        var budget = budgetController.getBudget();
         // display the budget on the UI
-
+        console.log('budget :', budget);
     };
     var ctrlAddItem = function() {
         var input, newItem;

@@ -60,6 +60,20 @@ var budgetController = (function() {
             return newItem;
         },
 
+        deleteitem: function(type, id) {
+            var ids, index;
+            var ids = data.allItems[type].map(function(element) {
+
+                return element.id;
+            })
+            index = ids.indexOf(id);
+            if (index !== -1) {
+                data.allItems[type].splice(index, 1);
+            }
+
+
+        },
+
         calculateBudget: function() {
             // calculate total income and expenses
 

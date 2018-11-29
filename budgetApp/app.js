@@ -168,6 +168,12 @@ var UIController = (function() {
             // insert the html into the DOM
             document.querySelector(element).insertAdjacentHTML("beforeend", newHtml);
         },
+        deleteListItem: function(selectorID) {
+            var element = document.getElementById(selectorID);
+            element.parentNode.removeChild(element);
+
+
+        },
         clearFields: function() {
             var fields, fieldsArr;
             fields = document.querySelectorAll(DOMstrings.inputDescription + "," + DOMstrings.inputValue)
